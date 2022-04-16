@@ -1,4 +1,4 @@
-module penguin-http
+module github.com/shenpan233/penguin-http
 
 go 1.17
 
