@@ -3,11 +3,12 @@
   @Creat:   2022/4/16 9:42
 */
 
-package penguin_http
+package penguin
 
 import (
 	"bytes"
 	"net/http"
+	"strings"
 )
 
 func (this *PenguinHttp) SetOnResponse(on OnResponse) *PenguinHttp {
@@ -24,17 +25,22 @@ func (this *PenguinHttp) SetOnComplete(on OnComplete) *PenguinHttp {
 
 func (this *PenguinHttp) makeReq(url string) (req *http.Request, err error) {
 	var (
-		param string
+		param strings.Builder
 		body  *bytes.Buffer
 	)
 	//param build
-	for k, v := range this.param {
-		param += "&" + k + "=" + v
+	if len(this.param) > 0 {
+		param.WriteString(this.build.baseurl)
+		param.WriteString("/?")
+		for k, v := range this.param {
+			param.WriteString("&" + k + "=" + v)
+			//param += "&" + k + "=" + v
+		}
+		url = param.String()
+	} else {
+		url = this.build.baseurl + url
 	}
-	if param != "" {
-		url += "?" + param
-	}
-	url = this.build.baseurl + "/" + url
+
 	//header build
 
 	this.checkAndSetHeader("Accept", "*/*")
@@ -47,8 +53,9 @@ func (this *PenguinHttp) makeReq(url string) (req *http.Request, err error) {
 	if this.bodyUpload != nil {
 		body = bytes.NewBuffer(this.bodyUpload)
 	} else {
-		if this.bodyReq != "" {
-			body = bytes.NewBufferString(this.bodyReq)
+		if this.bodyReq.Len() > 0 {
+			sendBody := this.bodyReq.String()
+			body = bytes.NewBufferString(sendBody[:len(sendBody)-1])
 		}
 	}
 
@@ -57,7 +64,6 @@ func (this *PenguinHttp) makeReq(url string) (req *http.Request, err error) {
 		req, err = http.NewRequest(this.method, url, nil)
 	} else {
 		req, err = http.NewRequest(this.method, url, body)
-
 	}
 
 	if err != nil {

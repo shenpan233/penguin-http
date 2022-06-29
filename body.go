@@ -4,9 +4,10 @@
   @Notice:  请求数据
 */
 
-package penguin_http
+package penguin
 
 import (
+	"fmt"
 	json "github.com/json-iterator/go"
 )
 
@@ -17,14 +18,26 @@ func (this *PenguinHttp) SetUpload(bin []byte) *PenguinHttp {
 }
 
 //SendString 增加一条请求数据 只是拼接不会进行其他处理
-func (this *PenguinHttp) SendString(data string) *PenguinHttp {
-	this.bodyReq += data
+func (this *PenguinHttp) SendString(key, val string) *PenguinHttp {
+	this.bodyReq.WriteString(key + "=" + val + "&")
 	return this
 
 }
 
-func (this *PenguinHttp) SendStruct(data interface{}) *PenguinHttp {
+//SendMap 通过map方式添加数据,性能低不建议使用
+func (this *PenguinHttp) SendMap(data map[string]interface{}) *PenguinHttp {
+	if len(data) > 0 {
+		for key, val := range data {
+			this.bodyReq.WriteString(fmt.Sprintf("%s=%v", key, val) + "&")
+		}
+	}
+	return this
+
+}
+
+//SendStructJson 自动将struct转化为json数据
+func (this *PenguinHttp) SendStructJson(data interface{}) *PenguinHttp {
 	marshal, _ := json.Marshal(data)
-	this.bodyReq = string(marshal)
+	this.bodyReq.Write(marshal)
 	return this
 }

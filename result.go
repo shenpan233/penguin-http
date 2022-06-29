@@ -4,7 +4,7 @@
   @Notice:  Result封装
 */
 
-package penguin_http
+package penguin
 
 import (
 	"crypto/tls"
@@ -37,9 +37,33 @@ func (this *PenguinResult) Json(val interface{}) {
 }
 
 func (this *PenguinResult) String() string {
+	if this == nil {
+		return ""
+	}
 	return string(this.bin)
 }
 
 func (this *PenguinResult) Bytes() []byte {
+	if this == nil {
+		return nil
+	}
 	return this.bin
+}
+
+func (this *PenguinResult) Clear() {
+	this.bin = nil
+	this.Cookies = map[string]string{}
+	this.Status = ""
+	this.StatusCode = 0
+	this.Proto = ""
+	this.ProtoMajor = 0
+	this.ProtoMinor = 0
+	this.Header = http.Header{}
+	this.ContentLength = 0
+	this.TransferEncoding = make([]string, 0)
+	this.Close = false
+	this.Uncompressed = false
+	this.Trailer = http.Header{}
+	this.TLS = nil
+
 }

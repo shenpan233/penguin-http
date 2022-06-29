@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/penguin-http.iml" filepath="$PROJECT_DIR$/.idea/penguin-http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PenguinHttp.iml" filepath="$PROJECT_DIR$/.idea/PenguinHttp.iml" />
     </modules>
   </component>
 </project>

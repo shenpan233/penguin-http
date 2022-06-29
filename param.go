@@ -4,7 +4,7 @@
   @Notice:  表单式提交数据
 */
 
-package penguin_http
+package penguin
 
 import (
 	"net/url"

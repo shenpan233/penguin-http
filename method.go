@@ -4,9 +4,13 @@
   @Notice:  Method
 */
 
-package penguin_http
+package penguin
 
-func (p *PenguinHttp) GET() *PenguinHttp {
+import (
+	"reflect"
+)
+
+func (p *PenguinHttp) GET() (http *PenguinHttp) {
 	p.method = GET
 	return p
 }
@@ -14,4 +18,10 @@ func (p *PenguinHttp) GET() *PenguinHttp {
 func (p *PenguinHttp) POST() *PenguinHttp {
 	p.method = POST
 	return p
+}
+func copyPoint(m *PenguinHttp) *PenguinHttp {
+	vt := reflect.TypeOf(m).Elem()
+	newoby := reflect.New(vt)
+	newoby.Elem().Set(reflect.ValueOf(m).Elem())
+	return newoby.Interface().(*PenguinHttp)
 }

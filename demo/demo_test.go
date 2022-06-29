@@ -7,23 +7,28 @@
 package demo
 
 import (
-	penguin_http "penguin-http"
+	penguin "github.com/shenpan233/PenguinHttp"
 	"testing"
 )
 
 func TestDemo(t *testing.T) {
 	demo()
 }
+
+var http = *penguin.Builder().
+	BaseUrl("http://localhost").
+	Build().
+	SetHeaderFromMap(map[string]string{
+		"header": "hello world",
+	})
+
 func demo() {
-	http := penguin_http.Builder().
-		BaseUrl("http://github.com/shenpan233").
-		Build()
+	penguinHttp := http.GET()
+	penguinHttp.Sync("")
+}
 
-	http.GET().
-		SetCookie("cookies1", "2333").
-		SetHeaderFromMap(map[string]string{
-			"header": "hello world",
-		}).
-		Sync("/Penguin-http")
-
+func BenchmarkGet(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		demo()
+	}
 }

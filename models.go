@@ -1,6 +1,10 @@
-package penguin_http
+package penguin
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+	"sync"
+)
 
 type (
 	PenguinBuilder struct {
@@ -16,9 +20,10 @@ type (
 		cookie     []*http.Cookie
 		header     http.Header
 		bodyUpload []byte
-		bodyReq    string
+		bodyReq    strings.Builder //POST的请求参
 		onResponse OnResponse
 		onComplete OnComplete
+		pool       *sync.Pool
 	}
 )
 

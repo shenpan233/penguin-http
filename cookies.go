@@ -4,7 +4,7 @@
   @Notice:  cookies
 */
 
-package penguin_http
+package penguin
 
 import (
 	"net/http"

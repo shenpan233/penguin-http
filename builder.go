@@ -1,6 +1,10 @@
-package penguin_http
+package penguin
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+	"sync"
+)
 
 func Builder() *PenguinBuilder {
 	return new(PenguinBuilder)
@@ -26,6 +30,11 @@ func (build *PenguinBuilder) Build() *PenguinHttp {
 		cookie:     nil,
 		header:     http.Header{},
 		bodyUpload: nil,
-		bodyReq:    "",
+		bodyReq:    strings.Builder{},
+		pool: &sync.Pool{New: func() interface{} {
+			p := new(PenguinResult)
+			p.Clear()
+			return p
+		}},
 	}
 }

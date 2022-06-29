@@ -4,7 +4,7 @@
   @Notice:  Header参数
 */
 
-package penguin_http
+package penguin
 
 //SetUserAgent 设置UA
 func (this *PenguinHttp) SetUserAgent(ua string) *PenguinHttp {

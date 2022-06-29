@@ -1,4 +1,4 @@
-package penguin_http
+package penguin
 
 const (
 	GET    = "GET"
